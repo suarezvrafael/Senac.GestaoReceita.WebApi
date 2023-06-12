@@ -14,11 +14,12 @@ branchs:
 - feature/login
 - feature/menu
 - feature/cadreceita
+-
 
 Gestão de Receitas Interdisciplinar
 1. Nome do sistema: Senac.GestaoReceita.WebApi
 
-   -Instalar pacotes 
+   -Instalar packages
    
 2. Login 
    - usuario
