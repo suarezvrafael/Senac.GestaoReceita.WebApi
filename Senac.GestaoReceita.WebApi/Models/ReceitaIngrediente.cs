@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Senac.GestaoReceita.WebApi.Models
+{
+    public class ReceitaIngrediente
+    {
+        [Key]
+        public int Id { get; set; }
+        public int IdIngrediente { get; set; }
+        public int IdReceita { get; set; }
+        [Required(ErrorMessage = "A quantiade de ingredientes deve ser informada")]
+        public int quantidadeIngrediente { get; set; }
+
+        public int IdGastoVariado { get; set; }
+        public decimal qntGastoVariado { get; set; }
+    }
+}
