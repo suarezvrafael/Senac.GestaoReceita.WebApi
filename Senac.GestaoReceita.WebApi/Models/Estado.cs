@@ -13,5 +13,7 @@ namespace Senac.GestaoReceita.WebApi.Models
         [Required(ErrorMessage = "Sigla do estado deve ser informado")]
         [StringLength(2), MinLength(2, ErrorMessage = "Sigla deve ter no mínimo 2 caracteres")]
         public string Sigla { get; set; }
+
+        public List<Cidade> cidades { get; set; }
     }
 }
