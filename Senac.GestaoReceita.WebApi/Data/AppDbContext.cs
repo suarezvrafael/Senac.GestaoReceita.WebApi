@@ -13,6 +13,8 @@ namespace Senac.GestaoReceita.WebApi.Data
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
 
+        public DbSet<Empresa> Empresas{ get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cidade>()
