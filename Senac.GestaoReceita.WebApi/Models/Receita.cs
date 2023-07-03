@@ -15,5 +15,7 @@ namespace Senac.GestaoReceita.WebApi.Models
         public int IdEmpresa { get; set; }
        
         public decimal ValorTotalReceita { get; set; }
+
+        public List<ReceitaIngrediente> ReceitaIngrediente { get; set; }
     }
 }
