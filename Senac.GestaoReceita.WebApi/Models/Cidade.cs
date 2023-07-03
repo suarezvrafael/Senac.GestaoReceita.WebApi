@@ -5,14 +5,14 @@ namespace Senac.GestaoReceita.WebApi.Models
     public class Cidade
     {
         [Key]
+        [StringLength(11)]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Municipio deve ser informado")]
-        [StringLength(200), MinLength(4, ErrorMessage = "Município deve ter no mínimo 4 caracteres")]
+        [StringLength(100)]
         public string descricaoCidade { get; set; }
 
         [Required(ErrorMessage = "Código do estado deve ser informado")]
-        public int EstadoId { get; set; }
+        public int IdEstado { get; set; }
         public Estado Estado { get; set; }
     }
 }

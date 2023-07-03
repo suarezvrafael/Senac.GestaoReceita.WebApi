@@ -12,13 +12,20 @@ namespace Senac.GestaoReceita.WebApi.Data
 
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
+        public DbSet<Pais> Paises { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cidade>()
             .HasOne(c => c.Estado) // relacionamento um-para-um ou muitos-para-um
             .WithMany() // relacionamento muitos-para-muitos
-            .HasForeignKey(c => c.EstadoId); // chave estrangeira
+            .HasForeignKey(c => c.IdEstado); // chave estrangeira
+
+            modelBuilder.Entity<Estado>()
+            .HasOne(c => c.Pais) 
+            .WithMany() 
+            .HasForeignKey(c => c. IdPais); 
+
         }
     }
 }
