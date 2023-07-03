@@ -15,7 +15,7 @@ namespace Senac.GestaoReceita.WebApi.Models
 
 
         [StringLength(150)]
-        public string razaoSosical{ get; set; }
+        public string razaoSosial{ get; set; }
 
 
         [StringLength(150)]
@@ -49,7 +49,7 @@ namespace Senac.GestaoReceita.WebApi.Models
         [StringLength(11)]//
         public int idcidade { get; set; }
 
-
+        public Cidade cidade { get; set; }
 
 
 
