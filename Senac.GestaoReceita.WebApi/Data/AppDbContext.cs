@@ -25,6 +25,11 @@ namespace Senac.GestaoReceita.WebApi.Data
             .HasOne(i => i.Empresa)
             .WithMany()
             .HasForeignKey(i => i.EmpresaId);
+
+            modelBuilder.Entity<Ingrediente>()
+           .HasOne(u => u.UnidadeMedida)
+           .WithMany()
+           .HasForeignKey(u => u.UnidadeMedidaId);
         }
     }
 }
