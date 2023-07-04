@@ -7,7 +7,7 @@ namespace Senac.GestaoReceita.WebApi.Models
     public class Empresa
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(18)]//
         public string CNPJ { get; set; }

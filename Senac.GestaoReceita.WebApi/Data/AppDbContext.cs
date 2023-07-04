@@ -13,7 +13,6 @@ namespace Senac.GestaoReceita.WebApi.Data
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Ingrediente> Ingredientes { get; set; }
-
         public DbSet<Empresa> Empresas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +21,11 @@ namespace Senac.GestaoReceita.WebApi.Data
             .HasOne(c => c.Estado) // relacionamento um-para-um ou muitos-para-um
             .WithMany() // relacionamento muitos-para-muitos
             .HasForeignKey(c => c.EstadoId); // chave estrangeira
+
+            modelBuilder.Entity<Empresa>()
+            .HasOne(c => c.cidade) // relacionamento um-para-um ou muitos-para-um
+            .WithMany() // relacionamento muitos-para-muitos
+            .HasForeignKey(c => c.idcidade); // chave estrangeira
 
             modelBuilder.Entity<Ingrediente>()
             .HasOne(i => i.Empresa)
@@ -32,11 +36,6 @@ namespace Senac.GestaoReceita.WebApi.Data
            .HasOne(u => u.UnidadeMedida)
            .WithMany()
            .HasForeignKey(u => u.UnidadeMedidaId);
-
-            modelBuilder.Entity<Empresa>()
-            .HasOne(c => c.cidade) // relacionamento um-para-um ou muitos-para-um
-            .WithMany() // relacionamento muitos-para-muitos
-            .HasForeignKey(c => c.idcidade); // chave estrangeira
         }
     }
 }
