@@ -12,7 +12,7 @@ namespace Senac.GestaoReceita.WebApi.Data
 
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
-        public DbSet<Receita> Receita { get; set; }
+        public DbSet<Receita> Receitas { get; set; }
         public DbSet<ReceitaIngrediente> ReceitaIngredientes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
