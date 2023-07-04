@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Senac.GestaoReceita.WebApi.Models;
 
 namespace Senac.GestaoReceita.WebApi.Data
@@ -14,6 +14,8 @@ namespace Senac.GestaoReceita.WebApi.Data
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Receita> Receitas { get; set; }
         public DbSet<ReceitaIngrediente> ReceitaIngredientes { get; set; }
+        public DbSet<Ingrediente> Ingredientes { get; set; }
+        public DbSet<Empresa> Empresas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +34,21 @@ namespace Senac.GestaoReceita.WebApi.Data
             .WithMany() // relacionamento muitos-para-muitos
             .HasForeignKey(c => c.Idingrediente); // chave estrangeira
 
+
+            modelBuilder.Entity<Empresa>()
+            .HasOne(c => c.cidade) // relacionamento um-para-um ou muitos-para-um
+            .WithMany() // relacionamento muitos-para-muitos
+            .HasForeignKey(c => c.idcidade); // chave estrangeira
+
+            modelBuilder.Entity<Ingrediente>()
+            .HasOne(i => i.Empresa)
+            .WithMany()
+            .HasForeignKey(i => i.EmpresaId);
+
+            modelBuilder.Entity<Ingrediente>()
+           .HasOne(u => u.UnidadeMedida)
+           .WithMany()
+           .HasForeignKey(u => u.UnidadeMedidaId);
         }
     }
 }
