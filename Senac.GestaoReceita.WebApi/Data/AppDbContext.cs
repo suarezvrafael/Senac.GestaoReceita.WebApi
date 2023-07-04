@@ -21,6 +21,17 @@ namespace Senac.GestaoReceita.WebApi.Data
             .HasOne(c => c.Estado) // relacionamento um-para-um ou muitos-para-um
             .WithMany() // relacionamento muitos-para-muitos
             .HasForeignKey(c => c.EstadoId); // chave estrangeira
+
+            modelBuilder.Entity<ReceitaIngrediente>()
+            .HasOne(c => c.Receita) // relacionamento um-para-um ou muitos-para-um
+            .WithMany() // relacionamento muitos-para-muitos
+            .HasForeignKey(c => c.IdReceita); // chave estrangeira
+
+            modelBuilder.Entity<ReceitaIngrediente>()
+            .HasOne(c => c.Ingrediente) // relacionamento um-para-um ou muitos-para-um
+            .WithMany() // relacionamento muitos-para-muitos
+            .HasForeignKey(c => c.Idingrediente); // chave estrangeira
+
         }
     }
 }
