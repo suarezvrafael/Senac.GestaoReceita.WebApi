@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Senac.GestaoReceita.WebApi.Data;
+using Senac.GestaoReceita.WebApi.Dto;
 using Senac.GestaoReceita.WebApi.Models;
 
 namespace Senac.GestaoReceita.WebApi.Controllers
@@ -84,16 +85,21 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // POST: api/Estados
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Estado>> PostEstado(Estado estado)
+        public async Task<ActionResult<Estado>> PostEstado(EstadoRequest estado)
         {
+            var novoEstado = new Estado()
+            {
+                descricaoEstado = estado.descricaoEstado,
+                IdPais = estado.IdPais,
+            };
           if (_context.Estados == null)
           {
               return Problem("Entity set 'AppDbContext.Estados'  is null.");
           }
-            _context.Estados.Add(estado);
+            _context.Estados.Add(novoEstado);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEstado", new { id = estado.Id }, estado);
+            return CreatedAtAction("GetEstado", new { id = novoEstado.Id }, estado);
         }
 
         // DELETE: api/Estados/5
