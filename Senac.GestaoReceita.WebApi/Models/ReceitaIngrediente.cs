@@ -8,7 +8,7 @@ namespace Senac.GestaoReceita.WebApi.Models
         public int Id { get; set; }
         
         public int IdReceita { get; set; }
-        public Receita Receita { get; set; }
+        
         public int Idingrediente { get; set; }
 
         public Ingrediente Ingrediente { get; set; }
