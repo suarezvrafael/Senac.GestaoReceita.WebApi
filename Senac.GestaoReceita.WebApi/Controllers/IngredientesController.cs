@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Senac.GestaoReceita.WebApi.Data;
+using Senac.GestaoReceita.WebApi.Dto;
 using Senac.GestaoReceita.WebApi.Models;
 
 namespace Senac.GestaoReceita.WebApi.Controllers
@@ -84,16 +85,26 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // POST: api/Ingredientes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Ingrediente>> PostIngrediente(Ingrediente ingrediente)
+        public async Task<ActionResult<Ingrediente>> PostIngrediente(IngredienteRequest ingrediente)
         {
           if (_context.Ingredientes == null)
           {
               return Problem("Entity set 'AppDbContext.Ingredientes'  is null.");
           }
-            _context.Ingredientes.Add(ingrediente);
+
+            var novoIngrediente = new Ingrediente()
+            {
+                NomeIngrediente = ingrediente.NomeIngrediente,
+                PrecoIngrediente = ingrediente.PrecoIngrediente,
+                QuantidadeUnidade = ingrediente.QuantidadeUnidade,
+                EmpresaId = ingrediente.EmpresaId, 
+                UnidadeMedidaId = ingrediente.UnidadeMedidaId
+            };
+
+            _context.Ingredientes.Add(novoIngrediente);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetIngrediente", new { id = ingrediente.Id }, ingrediente);
+            return CreatedAtAction("GetIngrediente", new { id = novoIngrediente.Id }, ingrediente);
         }
 
         // DELETE: api/Ingredientes/5
