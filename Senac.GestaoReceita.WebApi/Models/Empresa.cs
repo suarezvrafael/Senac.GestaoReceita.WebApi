@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -7,7 +7,7 @@ namespace Senac.GestaoReceita.WebApi.Models
     public class Empresa
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(18)]//
         public string CNPJ { get; set; }

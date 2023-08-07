@@ -12,6 +12,7 @@ namespace Senac.GestaoReceita.WebApi.Data
 
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
+        public DbSet<Ingrediente> Ingredientes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pais> Paises { get; set; }
 
@@ -36,6 +37,16 @@ namespace Senac.GestaoReceita.WebApi.Data
             .WithMany() 
             .HasForeignKey(c => c. IdPais); 
 
+
+            modelBuilder.Entity<Ingrediente>()
+            .HasOne(i => i.Empresa)
+            .WithMany()
+            .HasForeignKey(i => i.EmpresaId);
+
+            modelBuilder.Entity<Ingrediente>()
+           .HasOne(u => u.UnidadeMedida)
+           .WithMany()
+           .HasForeignKey(u => u.UnidadeMedidaId);
         }
     }
 }
