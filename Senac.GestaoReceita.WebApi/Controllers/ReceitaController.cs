@@ -24,7 +24,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
         // GET: api/Receita
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReceitaRequest>>> GetReceitas()
+        public async Task<ActionResult<IEnumerable<Receita>>> GetReceitas()
         {
             if (_context.Receitas == null)
             {
@@ -35,7 +35,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
         // GET: api/Receita/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReceitaRequest>> GetReceita(int id)
+        public async Task<ActionResult<Receita>> GetReceita(int id)
         {
             if (_context.Receitas == null)
             {
@@ -56,10 +56,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReceita(int id, ReceitaRequest receita)
         {
-            if (id != receita.Id)
-            {
-                return BadRequest();
-            }
+            
 
             _context.Entry(receita).State = EntityState.Modified;
 

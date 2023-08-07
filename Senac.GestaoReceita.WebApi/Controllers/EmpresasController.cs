@@ -55,7 +55,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmpresa(int id, Empresa empresa)
         {
-            if (id != empresa.id)
+            if (id != empresa.Id)
             {
                 return BadRequest();
             }
@@ -93,7 +93,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             _context.Empresas.Add(empresa);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmpresa", new { id = empresa.id }, empresa);
+            return CreatedAtAction("GetEmpresa", new { id = empresa.Id }, empresa);
         }
 
         // DELETE: api/Empresas/5
@@ -118,7 +118,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
         private bool EmpresaExists(int id)
         {
-            return (_context.Empresas?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Empresas?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

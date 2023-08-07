@@ -11,8 +11,8 @@ using Senac.GestaoReceita.WebApi.Data;
 namespace Senac.GestaoReceita.WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230711000212_tblReceita_tbl_receitaIngrediente_Ingrediente_UnidadeMedida")]
-    partial class tblReceita_tbl_receitaIngrediente_Ingrediente_UnidadeMedida
+    [Migration("20230807230511_firstmigration")]
+    partial class firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,19 +26,20 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(11)
                         .HasColumnType("int");
 
-                    b.Property<int>("EstadoId")
+                    b.Property<int>("IdEstado")
                         .HasColumnType("int");
 
                     b.Property<string>("descricaoCidade")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EstadoId");
+                    b.HasIndex("IdEstado");
 
                     b.ToTable("Cidades");
                 });
@@ -118,19 +119,20 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(11)
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                    b.Property<int>("IdPais")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Sigla")
+                    b.Property<string>("descricaoEstado")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("varchar(2)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdPais");
 
                     b.ToTable("Estados");
                 });
@@ -146,7 +148,8 @@ namespace Senac.GestaoReceita.WebApi.Migrations
 
                     b.Property<string>("NomeIngrediente")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<decimal>("PrecoIngrediente")
                         .HasColumnType("decimal(65,30)");
@@ -164,6 +167,23 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                     b.HasIndex("UnidadeMedidaId");
 
                     b.ToTable("Ingredientes");
+                });
+
+            modelBuilder.Entity("Senac.GestaoReceita.WebApi.Models.Pais", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(11)
+                        .HasColumnType("int");
+
+                    b.Property<string>("descricaoPais")
+                        .IsRequired()
+                        .HasMaxLength(140)
+                        .HasColumnType("varchar(140)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Paises");
                 });
 
             modelBuilder.Entity("Senac.GestaoReceita.WebApi.Models.Receita", b =>
@@ -244,11 +264,49 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                     b.ToTable("UnidadeMedida");
                 });
 
+            modelBuilder.Entity("Senac.GestaoReceita.WebApi.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Acesso")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Ativo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ManterLogado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("Senac.GestaoReceita.WebApi.Models.Cidade", b =>
                 {
                     b.HasOne("Senac.GestaoReceita.WebApi.Models.Estado", "Estado")
                         .WithMany()
-                        .HasForeignKey("EstadoId")
+                        .HasForeignKey("IdEstado")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -264,6 +322,17 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("cidade");
+                });
+
+            modelBuilder.Entity("Senac.GestaoReceita.WebApi.Models.Estado", b =>
+                {
+                    b.HasOne("Senac.GestaoReceita.WebApi.Models.Pais", "Pais")
+                        .WithMany()
+                        .HasForeignKey("IdPais")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pais");
                 });
 
             modelBuilder.Entity("Senac.GestaoReceita.WebApi.Models.Ingrediente", b =>

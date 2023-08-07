@@ -12,6 +12,7 @@ namespace Senac.GestaoReceita.WebApi.Models
         public int Idingrediente { get; set; }
 
         public Ingrediente Ingrediente { get; set; }
+        public Receita Receita { get; set; }
         
         [Required(ErrorMessage = "A quantiade de ingredientes deve ser informada")]
         public int quantidadeIngrediente { get; set; }
