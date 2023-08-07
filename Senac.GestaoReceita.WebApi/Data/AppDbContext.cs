@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Senac.GestaoReceita.WebApi.Models;
 
 namespace Senac.GestaoReceita.WebApi.Data
@@ -13,6 +13,7 @@ namespace Senac.GestaoReceita.WebApi.Data
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Pais> Paises { get; set; }
 
 
 
@@ -29,6 +30,12 @@ namespace Senac.GestaoReceita.WebApi.Data
             .HasOne(c => c.cidade) // relacionamento um-para-um ou muitos-para-um
             .WithMany() // relacionamento muitos-para-muitos
             .HasForeignKey(c => c.idcidade); // chave estrangeira
+
+            modelBuilder.Entity<Estado>()
+            .HasOne(c => c.Pais) 
+            .WithMany() 
+            .HasForeignKey(c => c. IdPais); 
+
         }
     }
 }

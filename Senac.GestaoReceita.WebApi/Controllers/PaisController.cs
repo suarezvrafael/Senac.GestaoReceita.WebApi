@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,55 +13,55 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CidadesController : ControllerBase
+    public class PaisController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public CidadesController(AppDbContext context)
+        public PaisController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Cidades
+        // GET: api/Pais
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cidade>>> GetCidades()
+        public async Task<ActionResult<IEnumerable<Pais>>> GetPaises()
         {
-          if (_context.Cidades == null)
+          if (_context.Paises == null)
           {
               return NotFound();
           }
-            return await _context.Cidades.ToListAsync();
+            return await _context.Paises.ToListAsync();
         }
 
-        // GET: api/Cidades/5
+        // GET: api/Pais/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cidade>> GetCidade(int id)
+        public async Task<ActionResult<Pais>> GetPais(int id)
         {
-          if (_context.Cidades == null)
+          if (_context.Paises == null)
           {
               return NotFound();
           }
-            var cidade = await _context.Cidades.FindAsync(id);
+            var pais = await _context.Paises.FindAsync(id);
 
-            if (cidade == null)
+            if (pais == null)
             {
                 return NotFound();
             }
 
-            return cidade;
+            return pais;
         }
 
-        // PUT: api/Cidades/5
+        // PUT: api/Pais/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCidade(int id, Cidade cidade)
+        public async Task<IActionResult> PutPais(int id, Pais pais)
         {
-            if (id != cidade.Id)
+            if (id != pais.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(cidade).State = EntityState.Modified;
+            _context.Entry(pais).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +69,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CidadeExists(id))
+                if (!PaisExists(id))
                 {
                     return NotFound();
                 }
@@ -82,50 +82,48 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Cidades
+        // POST: api/Pais
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cidade>> PostCidade(CidadeRequest cidade)
+        public async Task<ActionResult<Pais>> PostPais(PaisRequest pais)
         {
-            var novaCidade = new Cidade()
+            var novoPais = new Pais()
             {
-                descricaoCidade = cidade.descricaoCidade,
-                IdEstado = cidade.IdEstado,
-
+                descricaoPais = pais.descricaoPais,
             };
-          if (_context.Cidades == null)
+          if (_context.Paises == null)
           {
-              return Problem("Entity set 'AppDbContext.Cidades'  is null.");
+              return Problem("Entity set 'AppDbContext.Paises'  is null.");
           }
-            _context.Cidades.Add(novaCidade);
+            _context.Paises.Add(novoPais);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCidade", new { id = novaCidade.Id }, cidade);
+            return CreatedAtAction("GetPais", new { id = novoPais.Id }, pais);
         }
 
-        // DELETE: api/Cidades/5
+        // DELETE: api/Pais/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCidade(int id)
+        public async Task<IActionResult> DeletePais(int id)
         {
-            if (_context.Cidades == null)
+            if (_context.Paises == null)
             {
                 return NotFound();
             }
-            var cidade = await _context.Cidades.FindAsync(id);
-            if (cidade == null)
+            var pais = await _context.Paises.FindAsync(id);
+            if (pais == null)
             {
                 return NotFound();
             }
 
-            _context.Cidades.Remove(cidade);
+            _context.Paises.Remove(pais);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CidadeExists(int id)
+        private bool PaisExists(int id)
         {
-            return (_context.Cidades?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Paises?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
