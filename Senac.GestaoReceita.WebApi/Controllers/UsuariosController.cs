@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Senac.GestaoReceita.WebApi.Data;
+using Senac.GestaoReceita.WebApi.Dto;
 using Senac.GestaoReceita.WebApi.Models;
 
 namespace Senac.GestaoReceita.WebApi.Controllers
@@ -94,6 +95,30 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+        }
+        // POST: api/Usuarios/Login
+        [HttpPost("Login")]
+        public async Task<ActionResult<UsuarioResponse>> Login(UsuarioRequest usuario)
+        {
+            // consultar usuario na base 
+            //  SELECT TOP(1) * FROM usuarios
+            //  WHERE usuario.Username LIKE 'rafael@hotmail.com'
+            //  AND usuario.Senha = '123'
+            //  AND usuario.ativo = 1
+            // buscar o usuario pelo username, senha e ativo = true
+            var usr = await _context.Usuarios.Where(w => 
+                w.Username.Equals(usuario.Username) && 
+                w.Senha.Equals(usuario.Senha) &&
+                w.Ativo.Equals(Ativo.Ativo) )
+                .FirstOrDefaultAsync();
+            // verifica se usuario do banco está nulo
+            if(usr == null)
+            {
+                // retorno HTTP 404 NotFound
+                return NotFound(usuario.Username);
+            }
+            // retorna HTTP 200 OK { "Nome": "Rafael", "username": "rafael"}
+            return Ok( new UsuarioResponse() { Nome = usr.Nome, Username = usr.Username });
         }
 
         // DELETE: api/Usuarios/5

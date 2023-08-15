@@ -84,12 +84,10 @@ namespace Senac.GestaoReceita.WebApi.Models
     public enum Ativo
 
     {
-
+        [Display(Name = "0")]
+        Inativo,
         [Display(Name = "1")]
-        Ativo,
-
-        [Display(Name = "2")]
-        Inativo
+        Ativo
 
     }
 
