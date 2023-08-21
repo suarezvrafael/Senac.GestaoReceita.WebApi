@@ -4,7 +4,7 @@ using System.Security.Principal;
 
 namespace Senac.GestaoReceita.WebApi.Models
 {
-    public class Empresa
+    public class EmpresaRequest
     {
         [Key]
         public int Id { get; set; }
@@ -38,7 +38,6 @@ namespace Senac.GestaoReceita.WebApi.Models
 
         
         public int idcidade { get; set; }
-        public Cidade cidade { get; set; }
 
         public DateTime createEmpresa { get; set; }
 

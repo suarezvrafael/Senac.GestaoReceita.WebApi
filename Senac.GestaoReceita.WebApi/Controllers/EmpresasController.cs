@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -84,13 +85,31 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // POST: api/Empresas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Empresa>> PostEmpresa(Empresa empresa)
+        public async Task<ActionResult<Empresa>> PostEmpresa(EmpresaRequest empresa)
         {
           if (_context.Empresas == null)
           {
               return Problem("Entity set 'AppDbContext.Empresas'  is null.");
           }
-            _context.Empresas.Add(empresa);
+
+            var cidade = _context.Cidades.FirstOrDefault(x =>  x.Id == empresa.idcidade);
+
+            var newEmpresa = new Empresa() { 
+                cidade = cidade,
+                email = empresa.email,
+                bairro = empresa.bairro,
+                CNPJ = empresa.CNPJ,    
+                complemento = empresa.complemento,
+                createEmpresa = DateTime.Now,
+                nomeFantasia = empresa.nomeFantasia,
+                numeroEndereco = empresa.numeroEndereco,
+                razaoSosial = empresa.razaoSosial,
+                rua = empresa.rua,
+                telefone = empresa.telefone,
+                idUsername = empresa.idUsername
+            };
+            _context.Empresas.Add(newEmpresa);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEmpresa", new { id = empresa.Id }, empresa);
