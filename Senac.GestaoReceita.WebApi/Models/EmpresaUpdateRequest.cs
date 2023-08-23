@@ -4,10 +4,12 @@ using System.Security.Principal;
 
 namespace Senac.GestaoReceita.WebApi.Models
 {
-    public class EmpresaRequest
+    public class EmpresaUpdateRequest
     {
 
-        [StringLength(18)]//
+        public int Id { get; set; }
+
+        [StringLength(18)]
         public string CNPJ { get; set; }
 
         [StringLength(150)]
@@ -33,16 +35,10 @@ namespace Senac.GestaoReceita.WebApi.Models
 
         [StringLength(150)]
         public string nomeFantasia { get; set; }
-
         
         public int idcidade { get; set; }
-
-        public DateTime createEmpresa { get; set; }
-
-        public DateTime updateEmpresa { get; set; }
-
-        
+       
         public int idUsername { get; set; }
-        //public Cidade cidade { get; set; }
+
     }
 }

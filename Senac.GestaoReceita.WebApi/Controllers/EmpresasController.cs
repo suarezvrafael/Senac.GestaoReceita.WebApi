@@ -30,7 +30,10 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           {
               return NotFound();
           }
-            return await _context.Empresas.ToListAsync();
+            return await _context.Empresas
+                .Include(empresa=>empresa.cidade)
+                .ThenInclude(cidade=>cidade.Estado)
+                .ThenInclude(estado=>estado.Pais).ToListAsync();
         }
 
         // GET: api/Empresas/5
@@ -41,7 +44,10 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           {
               return NotFound();
           }
-            var empresa = await _context.Empresas.FindAsync(id);
+            var empresa = await _context.Empresas
+                .Include(empresa => empresa.cidade)
+                .ThenInclude(cidade => cidade.Estado)
+                .ThenInclude(estado => estado.Pais).FirstOrDefaultAsync(f=>f.Id == id);
 
             if (empresa == null)
             {
@@ -54,14 +60,37 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // PUT: api/Empresas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmpresa(int id, Empresa empresa)
+        public async Task<IActionResult> PutEmpresa(int id, EmpresaUpdateRequest empresa)
         {
             if (id != empresa.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(empresa).State = EntityState.Modified;
+            var cidade = _context.Cidades.FirstOrDefault(x => x.Id == empresa.idcidade);
+
+            if (cidade == null)
+            {
+                return Problem("Cidade informada não cadastrada.");
+            }
+
+            var empresaEntity = _context.Empresas.Include(empresa=> empresa.cidade).First(x => x.Id == id);
+
+            empresaEntity.cidade = cidade;
+            empresaEntity.telefone = empresa.telefone;
+            empresaEntity.email = empresa.email;
+            empresaEntity.updateEmpresa = DateTime.Now;
+            empresaEntity.bairro = empresa.bairro;
+            empresaEntity.CNPJ = empresa.CNPJ;
+            empresaEntity.complemento = empresa.complemento;
+            empresaEntity.nomeFantasia = empresa.nomeFantasia;
+            empresaEntity.numeroEndereco = empresa.numeroEndereco;
+            empresaEntity.razaoSosial = empresa.razaoSosial;
+            empresaEntity.rua = empresa.rua;
+            empresaEntity.telefone = empresa.telefone;
+            
+
+            _context.Entry(empresaEntity).State = EntityState.Modified;
 
             try
             {
@@ -93,6 +122,11 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           }
 
             var cidade = _context.Cidades.FirstOrDefault(x =>  x.Id == empresa.idcidade);
+
+            if (cidade == null)
+            {
+                return Problem("Cidade informada não cadastrada.");
+            }
 
             var newEmpresa = new Empresa() { 
                 cidade = cidade,

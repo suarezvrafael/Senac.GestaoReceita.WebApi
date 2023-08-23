@@ -30,7 +30,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           {
               return NotFound();
           }
-            return await _context.Estados.ToListAsync();
+            return await _context.Estados.Include( estado => estado.Pais).ToListAsync();
         }
 
         // GET: api/Estados/5
@@ -41,7 +41,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           {
               return NotFound();
           }
-            var estado = await _context.Estados.FindAsync(id);
+            var estado = await _context.Estados.Include(estado => estado.Pais).FirstOrDefaultAsync( f=> f.Id == id);
 
             if (estado == null)
             {
