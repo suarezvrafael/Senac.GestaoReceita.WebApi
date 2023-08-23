@@ -96,7 +96,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             ingredienteEntity.UnidadeMedida = unidadeMedida;
             ingredienteEntity.Empresa = empresa;
 
-            _context.Entry(ingrediente).State = EntityState.Modified;
+            _context.Entry(ingredienteEntity).State = EntityState.Modified;
 
             try
             {
