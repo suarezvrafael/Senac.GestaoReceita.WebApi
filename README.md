@@ -2,6 +2,16 @@
 Sistema WebAPI de gestão de receitas
 Backend
 
+Para rodar local:
+- git clone git@github.com:suarezvrafael/Senac.GestaoReceita.WebApi.git
+- git checkout main
+- abrir xamp
+- rodar apache
+- rodar mysql
+- abrir .sln
+- abrir console de gerenciador de pacotes
+- executar comando: update-database
+- rodar api
 
 branchs:
 - main - (NÃO FAZER COMMIT)
