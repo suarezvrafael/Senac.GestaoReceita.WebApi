@@ -2,7 +2,7 @@
 Sistema WebAPI de gestão de receitas feito em .net 6, asp net core, entity framework, mysql 
 Backend
 
-Para rodar local:
+## Para rodar local:
 - git clone git@github.com:suarezvrafael/Senac.GestaoReceita.WebApi.git
 - git checkout main
 - abrir xamp
@@ -13,7 +13,7 @@ Para rodar local:
 - executar comando: update-database
 - rodar api
 
-branchs:
+## branchs:
 - main - (NÃO FAZER COMMIT)
 - develop
 - feature/ajustesestrutura
@@ -26,23 +26,23 @@ branchs:
 - feature/cadreceita
 -
 
-Gestão de Receitas Interdisciplinar
-1. Nome do sistema: Senac.GestaoReceita.WebApi
+## Gestão de Receitas Interdisciplinar
+## 1. Nome do sistema: Senac.GestaoReceita.WebApi
 
    -Instalar packages
    
-2. Login 
+## 2. Login 
    - usuario
    - senha
     - Entrar
     - Cancelar
 	   
-4. CadEmpresa
+## 4. CadEmpresa
    - CadUsuario
    - CadIngrediente
    - CadUnidadeMedida
 
-5. Banco de Dados(Modelo Workbench )   
+## 5. Banco de Dados(Modelo Workbench )   
    
 - tblcidade
 - tblempresa
@@ -54,7 +54,7 @@ Gestão de Receitas Interdisciplinar
 - tblreceitaingrediente
 - tblunidademedida
 
-6. Integrantes
+## 6. Integrantes
 - @suarezrafael	Rafael Suarez suarezrafael
 - @Gsoder	Gsoder Gsoder
 - @OwJoao13	Joao Frango OwJoao13
