@@ -24,24 +24,77 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
         // GET: api/Receita
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Receita>>> GetReceitas()
+        public async Task<ActionResult<IEnumerable<ReceitaResponse>>> GetReceitas()
         {
             if (_context.Receitas == null)
             {
                 return NotFound();
             }
-            return await _context.Receitas.ToListAsync();
+            return await _context.Receitas
+                .Include(receita => receita.ReceitaIngrediente)
+                .ThenInclude(ri => ri.Ingrediente)
+                .Select( receita => new ReceitaResponse
+                {
+                    Id = receita.Id,
+                    nomeReceita = receita.nomeReceita,
+                    ValorTotalReceita = receita.ValorTotalReceita,
+                    ReceitaIngrediente = receita.ReceitaIngrediente.Select(ri => new ReceitaIngredienteResponse
+                    {
+                        Id = ri.Id,
+                        IdReceita = ri.IdReceita,
+                        Idingrediente = ri.Idingrediente,
+                        quantidadeIngrediente = ri.quantidadeIngrediente,
+                        IdGastoVariado = ri.IdGastoVariado,
+                        qntGastoVariado = ri.qntGastoVariado,
+                        Ingrediente = new IngredienteResponse 
+                        { 
+                          EmpresaId = ri.Ingrediente.EmpresaId,
+                          NomeIngrediente = ri.Ingrediente.NomeIngrediente,
+                          PrecoIngrediente = ri.Ingrediente.PrecoIngrediente,
+                          QuantidadeUnidade = ri.Ingrediente.QuantidadeUnidade,
+                          UnidadeMedidaId = ri.Ingrediente.UnidadeMedidaId
+                          
+                        }
+                    }).ToList()
+                })
+                .ToListAsync();
         }
 
         // GET: api/Receita/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Receita>> GetReceita(int id)
+        public async Task<ActionResult<ReceitaResponse>> GetReceita(int id)
         {
             if (_context.Receitas == null)
             {
                 return NotFound();
             }
-            var receita = await _context.Receitas.FindAsync(id);
+            var receita = await _context.Receitas
+                .Include(receita => receita.ReceitaIngrediente)
+                .ThenInclude(ri => ri.Ingrediente)
+                .Select(receita => new ReceitaResponse
+                {
+                    Id = receita.Id,
+                    nomeReceita = receita.nomeReceita,
+                    ValorTotalReceita = receita.ValorTotalReceita,
+                    ReceitaIngrediente = receita.ReceitaIngrediente.Select(ri => new ReceitaIngredienteResponse
+                    {
+                        Id = ri.Id,
+                        IdReceita = ri.IdReceita,
+                        Idingrediente = ri.Idingrediente,
+                        quantidadeIngrediente = ri.quantidadeIngrediente,
+                        IdGastoVariado = ri.IdGastoVariado,
+                        qntGastoVariado = ri.qntGastoVariado,
+                        Ingrediente = new IngredienteResponse
+                        {
+                            EmpresaId = ri.Ingrediente.EmpresaId,
+                            NomeIngrediente = ri.Ingrediente.NomeIngrediente,
+                            PrecoIngrediente = ri.Ingrediente.PrecoIngrediente,
+                            QuantidadeUnidade = ri.Ingrediente.QuantidadeUnidade,
+                            UnidadeMedidaId = ri.Ingrediente.UnidadeMedidaId
+
+                        }
+                    }).ToList()
+                }).FirstAsync(f=>f.Id == id);
 
             if (receita == null)
             {
@@ -91,23 +144,26 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
             var receitaIngrediente = new List<ReceitaIngrediente>();
 
-            foreach (var ri in receita.ReceitaIngrediente)
-            {
-                receitaIngrediente.Add(new ReceitaIngrediente() { 
-                    Idingrediente = ri.Idingrediente,
-                    IdReceita = ri.IdReceita,
-                    quantidadeIngrediente = ri.quantidadeIngrediente,
-                    IdGastoVariado = ri.IdGastoVariado,
-                    qntGastoVariado = ri.qntGastoVariado
-                });
-            }
-
             var novaReceita = new Receita()
             {
                 nomeReceita = receita.nomeReceita,
                 ValorTotalReceita = receita.ValorTotalReceita,
                 ReceitaIngrediente = receitaIngrediente
             };
+
+            foreach (var ri in receita.ReceitaIngrediente)
+            {
+                receitaIngrediente.Add(new ReceitaIngrediente() { 
+                    Idingrediente = ri.Idingrediente,
+                    quantidadeIngrediente = ri.quantidadeIngrediente,
+                    IdGastoVariado = ri.IdGastoVariado,
+                    qntGastoVariado = ri.qntGastoVariado,
+                    Receita = novaReceita
+                });
+            }
+            novaReceita.ReceitaIngrediente = receitaIngrediente;
+
+
             _context.Receitas.Add(novaReceita);
             await _context.SaveChangesAsync();
 
