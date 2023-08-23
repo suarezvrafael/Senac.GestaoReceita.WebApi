@@ -17,7 +17,7 @@ namespace Senac.GestaoReceita.WebApi.Data
         public DbSet<Ingrediente> Ingredientes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pais> Paises { get; set; }
-
+        public DbSet<UnidadeMedida> UnidadeMedida { get; set; }
 
 
         public DbSet<Empresa> Empresas { get; set; }

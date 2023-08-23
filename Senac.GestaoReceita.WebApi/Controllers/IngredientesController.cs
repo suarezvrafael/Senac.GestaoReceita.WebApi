@@ -30,7 +30,12 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           {
               return NotFound();
           }
-            return await _context.Ingredientes.ToListAsync();
+            return await _context.Ingredientes
+                .Include(ing=>ing.Empresa)
+                .ThenInclude(emp=>emp.cidade)
+                .ThenInclude(cid=>cid.Estado)
+                .ThenInclude(est=> est.Pais)
+                .Include(ing=>ing.UnidadeMedida).ToListAsync();
         }
 
         // GET: api/Ingredientes/5
@@ -41,7 +46,12 @@ namespace Senac.GestaoReceita.WebApi.Controllers
           {
               return NotFound();
           }
-            var ingrediente = await _context.Ingredientes.FindAsync(id);
+            var ingrediente = await _context.Ingredientes
+                .Include(ing => ing.Empresa)
+                .ThenInclude(emp => emp.cidade)
+                .ThenInclude(cid => cid.Estado)
+                .ThenInclude(est => est.Pais)
+                .Include(ing => ing.UnidadeMedida).FirstOrDefaultAsync(f=>f.Id == id);
 
             if (ingrediente == null)
             {
@@ -54,12 +64,37 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // PUT: api/Ingredientes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutIngrediente(int id, Ingrediente ingrediente)
+        public async Task<IActionResult> PutIngrediente(int id, IngredienteRequest ingrediente)
         {
             if (id != ingrediente.Id)
             {
                 return BadRequest();
             }
+
+
+            var empresa = _context.Empresas.FirstOrDefault(x => x.Id == ingrediente.EmpresaId);
+
+            if (empresa == null)
+            {
+                return Problem("empresa informada não cadastrada.");
+            }
+
+            var unidadeMedida = _context.UnidadeMedida.FirstOrDefault(x => x.Id == ingrediente.UnidadeMedidaId);
+
+            if (unidadeMedida == null)
+            {
+                return Problem("unidadeMedida informada não cadastrada.");
+            }
+
+            var ingredienteEntity = _context.Ingredientes
+                .Include(ing => ing.Empresa)
+                .Include(ing => ing.UnidadeMedida).First(x => x.Id == id);
+
+            ingredienteEntity.NomeIngrediente = ingrediente.NomeIngrediente;
+            ingredienteEntity.PrecoIngrediente = ingrediente.PrecoIngrediente;
+            ingredienteEntity.QuantidadeUnidade = ingrediente.QuantidadeUnidade;
+            ingredienteEntity.UnidadeMedida = unidadeMedida;
+            ingredienteEntity.Empresa = empresa;
 
             _context.Entry(ingrediente).State = EntityState.Modified;
 
@@ -92,13 +127,27 @@ namespace Senac.GestaoReceita.WebApi.Controllers
               return Problem("Entity set 'AppDbContext.Ingredientes'  is null.");
           }
 
+            var empresa = _context.Empresas.FirstOrDefault(x => x.Id == ingrediente.EmpresaId);
+
+            if (empresa == null)
+            {
+                return Problem("empresa informada não cadastrada.");
+            }
+
+            var unidadeMedida = _context.UnidadeMedida.FirstOrDefault(x => x.Id == ingrediente.UnidadeMedidaId);
+
+            if (unidadeMedida == null)
+            {
+                return Problem("unidadeMedida informada não cadastrada.");
+            }
+
             var novoIngrediente = new Ingrediente()
             {
                 NomeIngrediente = ingrediente.NomeIngrediente,
                 PrecoIngrediente = ingrediente.PrecoIngrediente,
                 QuantidadeUnidade = ingrediente.QuantidadeUnidade,
-                EmpresaId = ingrediente.EmpresaId, 
-                UnidadeMedidaId = ingrediente.UnidadeMedidaId
+                UnidadeMedida = unidadeMedida,
+                Empresa = empresa
             };
 
             _context.Ingredientes.Add(novoIngrediente);
