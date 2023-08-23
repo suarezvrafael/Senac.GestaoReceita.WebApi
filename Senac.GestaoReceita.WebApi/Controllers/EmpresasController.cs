@@ -146,7 +146,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmpresa", new { id = empresa.Id }, empresa);
+            return CreatedAtAction("GetEmpresa", new { id = newEmpresa.Id }, empresa);
         }
 
         // DELETE: api/Empresas/5
