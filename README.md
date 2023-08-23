@@ -40,13 +40,9 @@ Gestão de Receitas Interdisciplinar
 - tblgastovariado
 - tblingrediente
 - tblpais
-- tblparametros
-- tblpedido
-- tblpedidoreceita
 - tblreceita
 - tblreceitaingrediente
-- tblunidademedidagastovariado
-- tblunidademedidaingrediente  
+- tblunidademedida
 
 
 
