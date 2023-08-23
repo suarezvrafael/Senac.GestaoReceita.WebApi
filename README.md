@@ -55,29 +55,29 @@ Gestão de Receitas Interdisciplinar
 - tblunidademedida
 
 6. Integrantes
-	@suarezrafael	Rafael Suarez suarezrafael
-	@Gsoder	Gsoder Gsoder
-	@OwJoao13	Joao Frango OwJoao13
-	@locolome	Lorenzo Colomé locolome
-	@kellao998	Eduardo Keller kellao998
-	@DanielKloh	Daniel Kloh DanielKloh
-	@Pedrohwse	Pedro Carvalho Pedrohwse
-	@gui557	gui557
-	@TiozaoShow	Eduardo Mello TiozaoShow
-	@ingrael	ingrael
-	@KianeNoronha	KianeNoronha
-	@PatrickFigueiredo	Patrick Figueiredo PatrickFigueiredo
-	@3r1ckamorim	Érick 3r1ckamorim
-	@hholler90	Hugo Holler hholler90
-	@YuriRoos	Yuri YuriRoos
-	@Kryotsz	Igor Gassen Kryotsz
-	@BruninRocha	BruninRocha
-	@laurabkw	laurabkw
-	@GabrielSchvengber	schvengberGabriel GabrielSchvengber
-	@sandrizio	sandrizio gomes sandrizio
-	@UriDevzera	UriDevzera
-	@Akoneger	Akoneger
-	@Gabriel-Schoepf	Gabriel_Schoepf_Senac-RS Gabriel-Schoepf
+	- @suarezrafael	Rafael Suarez suarezrafael
+	- @Gsoder	Gsoder Gsoder
+	- @OwJoao13	Joao Frango OwJoao13
+	- @locolome	Lorenzo Colomé locolome
+	- @kellao998	Eduardo Keller kellao998
+	- @DanielKloh	Daniel Kloh DanielKloh
+	- @Pedrohwse	Pedro Carvalho Pedrohwse
+	- @gui557	gui557
+	- @TiozaoShow	Eduardo Mello TiozaoShow
+	- @ingrael	ingrael
+	- @KianeNoronha	KianeNoronha
+	- @PatrickFigueiredo	Patrick Figueiredo PatrickFigueiredo
+	- @3r1ckamorim	Érick 3r1ckamorim
+	- @hholler90	Hugo Holler hholler90
+	- @YuriRoos	Yuri YuriRoos
+	- @Kryotsz	Igor Gassen Kryotsz
+	- @BruninRocha	BruninRocha
+	- @laurabkw	laurabkw
+	- @GabrielSchvengber	schvengberGabriel GabrielSchvengber
+	- @sandrizio	sandrizio gomes sandrizio
+	- @UriDevzera	UriDevzera
+	- @Akoneger	Akoneger
+	- @Gabriel-Schoepf	Gabriel_Schoepf_Senac-RS Gabriel-Schoepf
 
 
 
