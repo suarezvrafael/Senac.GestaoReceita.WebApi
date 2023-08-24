@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Senac.GestaoReceita.WebApi.Data;
 
@@ -11,9 +12,11 @@ using Senac.GestaoReceita.WebApi.Data;
 namespace Senac.GestaoReceita.WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230824005135_banco_sqlserver")]
+    partial class banco_sqlserver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,11 +206,6 @@ namespace Senac.GestaoReceita.WebApi.Migrations
 
                     b.Property<int>("IdEmpresa")
                         .HasColumnType("int");
-
-                    b.Property<string>("ModoPreparo")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
 
                     b.Property<decimal>("ValorTotalReceita")
                         .HasColumnType("decimal(18,2)");

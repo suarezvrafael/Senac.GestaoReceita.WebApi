@@ -33,10 +33,12 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             return await _context.Receitas
                 .Include(receita => receita.ReceitaIngrediente)
                 .ThenInclude(ri => ri.Ingrediente)
-                .Select( receita => new ReceitaResponse
+                .ThenInclude(ing => ing.UnidadeMedida)
+                .Select(receita => new ReceitaResponse
                 {
                     Id = receita.Id,
                     nomeReceita = receita.nomeReceita,
+                    ModoPreparo = receita.ModoPreparo,
                     ValorTotalReceita = receita.ValorTotalReceita,
                     ReceitaIngrediente = receita.ReceitaIngrediente.Select(ri => new ReceitaIngredienteResponse
                     {
@@ -46,14 +48,19 @@ namespace Senac.GestaoReceita.WebApi.Controllers
                         quantidadeIngrediente = ri.quantidadeIngrediente,
                         IdGastoVariado = ri.IdGastoVariado,
                         qntGastoVariado = ri.qntGastoVariado,
-                        Ingrediente = new IngredienteResponse 
-                        { 
-                          EmpresaId = ri.Ingrediente.EmpresaId,
-                          NomeIngrediente = ri.Ingrediente.NomeIngrediente,
-                          PrecoIngrediente = ri.Ingrediente.PrecoIngrediente,
-                          QuantidadeUnidade = ri.Ingrediente.QuantidadeUnidade,
-                          UnidadeMedidaId = ri.Ingrediente.UnidadeMedidaId
-                          
+                        Ingrediente = new IngredienteResponse
+                        {
+                            EmpresaId = ri.Ingrediente.EmpresaId,
+                            NomeIngrediente = ri.Ingrediente.NomeIngrediente,
+                            PrecoIngrediente = ri.Ingrediente.PrecoIngrediente,
+                            QuantidadeUnidade = ri.Ingrediente.QuantidadeUnidade,
+                            UnidadeMedidaId = ri.Ingrediente.UnidadeMedidaId,
+                            UnidadeMedida = new UnidadeMedidaResponse
+                            {
+                                descUnidMedIngrediente = ri.Ingrediente.UnidadeMedida.descUnidMedIngrediente,
+                                sigla = ri.Ingrediente.UnidadeMedida.sigla
+                            }
+
                         }
                     }).ToList()
                 })
@@ -71,10 +78,12 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             var receita = await _context.Receitas
                 .Include(receita => receita.ReceitaIngrediente)
                 .ThenInclude(ri => ri.Ingrediente)
+                .ThenInclude(ing => ing.UnidadeMedida)
                 .Select(receita => new ReceitaResponse
                 {
                     Id = receita.Id,
                     nomeReceita = receita.nomeReceita,
+                    ModoPreparo = receita.ModoPreparo,
                     ValorTotalReceita = receita.ValorTotalReceita,
                     ReceitaIngrediente = receita.ReceitaIngrediente.Select(ri => new ReceitaIngredienteResponse
                     {
@@ -90,11 +99,16 @@ namespace Senac.GestaoReceita.WebApi.Controllers
                             NomeIngrediente = ri.Ingrediente.NomeIngrediente,
                             PrecoIngrediente = ri.Ingrediente.PrecoIngrediente,
                             QuantidadeUnidade = ri.Ingrediente.QuantidadeUnidade,
-                            UnidadeMedidaId = ri.Ingrediente.UnidadeMedidaId
+                            UnidadeMedidaId = ri.Ingrediente.UnidadeMedidaId,
+                            UnidadeMedida = new UnidadeMedidaResponse
+                            {
+                                descUnidMedIngrediente = ri.Ingrediente.UnidadeMedida.descUnidMedIngrediente,
+                                sigla = ri.Ingrediente.UnidadeMedida.sigla
+                            }
 
                         }
                     }).ToList()
-                }).FirstAsync(f=>f.Id == id);
+                }).FirstAsync(f => f.Id == id);
 
             if (receita == null)
             {
@@ -109,7 +123,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReceita(int id, ReceitaRequest receita)
         {
-            
+
 
             _context.Entry(receita).State = EntityState.Modified;
 
@@ -144,24 +158,40 @@ namespace Senac.GestaoReceita.WebApi.Controllers
 
             var receitaIngrediente = new List<ReceitaIngrediente>();
 
+            var valorTotalReceita = 0.00M;
+
             var novaReceita = new Receita()
             {
                 nomeReceita = receita.nomeReceita,
+                ModoPreparo = receita.ModoPreparo,
                 ValorTotalReceita = receita.ValorTotalReceita,
                 ReceitaIngrediente = receitaIngrediente
             };
 
             foreach (var ri in receita.ReceitaIngrediente)
             {
-                receitaIngrediente.Add(new ReceitaIngrediente() { 
+                var ingrediente = _context.Ingredientes.FirstOrDefault(x => x.Id == ri.Idingrediente);
+
+                if (ingrediente == null)
+                {
+                    return Problem(@$"ingrediente informada ({ri.Idingrediente}) não cadastrada.");
+                }
+
+                var valorIngrediente = ingrediente.PrecoIngrediente;
+
+                valorTotalReceita += valorIngrediente * ri.quantidadeIngrediente;
+
+                receitaIngrediente.Add(new ReceitaIngrediente()
+                {
                     Idingrediente = ri.Idingrediente,
                     quantidadeIngrediente = ri.quantidadeIngrediente,
                     IdGastoVariado = ri.IdGastoVariado,
                     qntGastoVariado = ri.qntGastoVariado,
                     Receita = novaReceita
-                });
+                }) ;
             }
             novaReceita.ReceitaIngrediente = receitaIngrediente;
+            novaReceita.ValorTotalReceita = valorTotalReceita;
 
 
             _context.Receitas.Add(novaReceita);

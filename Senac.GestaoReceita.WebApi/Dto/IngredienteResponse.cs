@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Senac.GestaoReceita.WebApi.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Senac.GestaoReceita.WebApi.Dto
 {
@@ -13,5 +14,7 @@ namespace Senac.GestaoReceita.WebApi.Dto
         public int EmpresaId { get; set; }
 
         public int UnidadeMedidaId { get; set; }
+
+        public UnidadeMedidaResponse UnidadeMedida{ get; set; }
     }
 }
