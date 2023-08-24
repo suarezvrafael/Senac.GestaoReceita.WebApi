@@ -123,9 +123,81 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReceita(int id, ReceitaRequest receita)
         {
+            //var empresa = _context.Empresas.FirstOrDefault(x => x.Id == ingrediente.EmpresaId);
 
+            //if (empresa == null)
+            //{
+            //    return Problem("empresa informada não cadastrada.");
+            //}
 
-            _context.Entry(receita).State = EntityState.Modified;
+            //var unidadeMedida = _context.UnidadeMedida.FirstOrDefault(x => x.Id == ingrediente.UnidadeMedidaId);
+
+            //if (unidadeMedida == null)
+            //{
+            //    return Problem("unidadeMedida informada não cadastrada.");
+            //}
+
+            var valorTotalReceita = 0.00M;
+
+            var receitaEntity = _context.Receitas
+                .Include(ing => ing.ReceitaIngrediente)
+                .ThenInclude(ri => ri.Ingrediente).First(x => x.Id == id);
+
+            receitaEntity.nomeReceita = receita.nomeReceita;
+            receitaEntity.ModoPreparo = receita.ModoPreparo;
+
+            // Remover ReceitaIngrediente que não estão mais presentes na requisição
+            var ingredientesToRemove = receitaEntity.ReceitaIngrediente
+                .Where(ri => !receita.ReceitaIngrediente.Any(riReq => riReq.Id == ri.Id))
+                .ToList();
+
+            foreach (var ingredienteToRemove in ingredientesToRemove)
+            {
+                _context.ReceitaIngredientes.Remove(ingredienteToRemove);
+            }
+
+            // Adicionar ou atualizar os ReceitaIngrediente da requisição
+            foreach (var receitaIngredienteReq in receita.ReceitaIngrediente)
+            {
+                var ingrediente = _context.Ingredientes.FirstOrDefault(x => x.Id == receitaIngredienteReq.Idingrediente);
+
+                if (ingrediente == null)
+                {
+                    return Problem(@$"ingrediente informada ({receitaIngredienteReq.Idingrediente}) não cadastrada.");
+                }
+                var valorIngrediente = ingrediente.PrecoIngrediente;
+
+                valorTotalReceita += valorIngrediente * receitaIngredienteReq.quantidadeIngrediente;
+
+                var receitaIngredienteEntity = receitaEntity.ReceitaIngrediente.FirstOrDefault(ri => ri.Id == receitaIngredienteReq.Id);
+
+                if (receitaIngredienteEntity == null)
+                {
+                    // Adicionar novo ReceitaIngrediente
+                    var novoReceitaIngrediente = new ReceitaIngrediente
+                    {
+                        // Preencha as propriedades aqui
+                        Idingrediente = receitaIngredienteReq.Idingrediente,
+                        Ingrediente = ingrediente,
+                        quantidadeIngrediente = receitaIngredienteReq.quantidadeIngrediente,
+                        IdGastoVariado = receitaIngredienteReq.IdGastoVariado,
+                        qntGastoVariado = receitaIngredienteReq.qntGastoVariado,
+                    };
+                    receitaEntity.ReceitaIngrediente.Add(novoReceitaIngrediente);
+                }
+                else
+                {
+                    // Atualizar propriedades do ReceitaIngrediente existente
+                    receitaIngredienteEntity.Idingrediente = receitaIngredienteReq.Idingrediente;
+                    receitaIngredienteEntity.Ingrediente = ingrediente;
+                    receitaIngredienteEntity.quantidadeIngrediente = receitaIngredienteReq.quantidadeIngrediente;
+                    // ...
+                }
+            }
+
+            receitaEntity.ValorTotalReceita = valorTotalReceita;
+
+            _context.Entry(receitaEntity).State = EntityState.Modified;
 
             try
             {
