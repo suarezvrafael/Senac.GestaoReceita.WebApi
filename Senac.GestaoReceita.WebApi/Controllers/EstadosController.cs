@@ -71,7 +71,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             estadoEntity.descricaoEstado = estado.descricaoEstado;
             estadoEntity.Pais = pais;
 
-            _context.Entry(estado).State = EntityState.Modified;
+            _context.Entry(estadoEntity).State = EntityState.Modified;
 
             try
             {
