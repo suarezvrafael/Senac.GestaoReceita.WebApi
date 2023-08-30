@@ -54,14 +54,25 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // PUT: api/Cidades/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCidade(int id, Cidade cidade)
+        public async Task<IActionResult> PutCidade(int id, CidadeRequest cidade)
         {
             if (id != cidade.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(cidade).State = EntityState.Modified;
+            var estado = _context.Estados.FirstOrDefault(x => x.Id == cidade.IdEstado);
+
+            if (estado == null)
+            {
+                return Problem("Estado informada não cadastrado.");
+            }
+
+            var cidadeEntity = _context.Cidades.First(x => x.Id == id);
+            cidadeEntity.descricaoCidade = cidade.descricaoCidade;
+            cidadeEntity.Estado = estado;
+            
+            _context.Entry(cidadeEntity).State = EntityState.Modified;
 
             try
             {

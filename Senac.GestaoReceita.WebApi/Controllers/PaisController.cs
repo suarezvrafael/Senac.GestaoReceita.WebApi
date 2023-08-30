@@ -54,12 +54,15 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // PUT: api/Pais/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPais(int id, Pais pais)
+        public async Task<IActionResult> PutPais(int id, PaisRequest pais)
         {
             if (id != pais.Id)
             {
-                return BadRequest();
+                return BadRequest("Id deve ser informado na requisição");
             }
+
+            var paisEntity = _context.Paises.First(x => x.Id == id);
+            paisEntity.descricaoPais = pais.descricaoPais;
 
             _context.Entry(pais).State = EntityState.Modified;
 

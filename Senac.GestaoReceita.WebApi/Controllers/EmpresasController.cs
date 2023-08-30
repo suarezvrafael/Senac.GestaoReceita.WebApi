@@ -64,7 +64,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         {
             if (id != empresa.Id)
             {
-                return BadRequest();
+                return BadRequest("Id da empresa não informado.");
             }
 
             var cidade = _context.Cidades.FirstOrDefault(x => x.Id == empresa.idcidade);
