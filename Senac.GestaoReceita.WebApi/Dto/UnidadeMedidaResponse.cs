@@ -2,7 +2,7 @@
 
 namespace Senac.GestaoReceita.WebApi.Models
 {
-    public class UnidadeMedida
+    public class UnidadeMedidaResponse
     {
         [Key]
         public int Id { get; set; }
@@ -10,5 +10,6 @@ namespace Senac.GestaoReceita.WebApi.Models
         public string descUnidMedIngrediente { get; set; }
         [StringLength(5), MinLength(2, ErrorMessage = "Descrição deve ter no mínimo 2 caracteres")]
         public string sigla { get; set; }
+
     }
 }

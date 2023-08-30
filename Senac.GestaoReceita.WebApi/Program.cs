@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 var conexao = builder.Configuration.GetConnectionString("conexao");
 builder.Services.AddDbContext<AppDbContext>(opcoes =>
 {
-    opcoes.UseMySql(conexao, ServerVersion.Parse("10.4.28-MariaDB"));
+   // opcoes.UseMySql(conexao, ServerVersion.Parse("10.4.28-MariaDB"));
+   opcoes.UseSqlServer(conexao);
 });
 
 builder.Services.AddControllers();
@@ -18,11 +19,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 

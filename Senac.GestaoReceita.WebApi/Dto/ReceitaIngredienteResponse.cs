@@ -10,7 +10,7 @@ namespace Senac.GestaoReceita.WebApi.Dto
 
         public int Idingrediente { get; set; }
         public IngredienteResponse Ingrediente { get; set; }
-        [Required(ErrorMessage = "A quantiade de ingredientes deve ser informada")]
+
         public int quantidadeIngrediente { get; set; }
 
         public int IdGastoVariado { get; set; }
