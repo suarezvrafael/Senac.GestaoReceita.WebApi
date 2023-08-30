@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,62 +7,77 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Senac.GestaoReceita.WebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class banco_sqlserver : Migration
+    public partial class primeira : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "Paises",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", maxLength: 11, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    descricaoPais = table.Column<string>(type: "nvarchar(140)", maxLength: 140, nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    descricaoPais = table.Column<string>(type: "varchar(140)", maxLength: 140, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Paises", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Receitas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    nomeReceita = table.Column<string>(type: "nvarchar(140)", maxLength: 140, nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    nomeReceita = table.Column<string>(type: "varchar(140)", maxLength: 140, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModoPreparo = table.Column<string>(type: "varchar(600)", maxLength: 600, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     IdEmpresa = table.Column<int>(type: "int", nullable: false),
-                    ValorTotalReceita = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ValorTotalReceita = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Receitas", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "UnidadeMedida",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    descUnidMedIngrediente = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    sigla = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    descUnidMedIngrediente = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    sigla = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UnidadeMedida", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Senha = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Username = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Senha = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Acesso = table.Column<int>(type: "int", nullable: false),
                     ManterLogado = table.Column<int>(type: "int", nullable: false),
                     EmpresaId = table.Column<int>(type: "int", nullable: false),
@@ -70,15 +86,17 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Estados",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", maxLength: 11, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    descricaoEstado = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    descricaoEstado = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     IdPais = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -90,15 +108,17 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                         principalTable: "Paises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Cidades",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", maxLength: 11, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    descricaoCidade = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    descricaoCidade = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     IdEstado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -110,26 +130,35 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                         principalTable: "Estados",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Empresas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    razaoSosial = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    rua = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    bairro = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CNPJ = table.Column<string>(type: "varchar(18)", maxLength: 18, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    razaoSosial = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    rua = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    bairro = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     numeroEndereco = table.Column<int>(type: "int", nullable: false),
-                    complemento = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
-                    telefone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    nomeFantasia = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    complemento = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    email = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    telefone = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    nomeFantasia = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     idcidade = table.Column<int>(type: "int", nullable: false),
-                    createEmpresa = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    updateEmpresa = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    createEmpresa = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    updateEmpresa = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     idUsername = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -141,17 +170,19 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                         principalTable: "Cidades",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Ingredientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeIngrediente = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    PrecoIngrediente = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    QuantidadeUnidade = table.Column<float>(type: "real", nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    NomeIngrediente = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PrecoIngrediente = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    QuantidadeUnidade = table.Column<float>(type: "float", nullable: false),
                     EmpresaId = table.Column<int>(type: "int", nullable: false),
                     UnidadeMedidaId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -170,19 +201,20 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                         principalTable: "UnidadeMedida",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "ReceitaIngredientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdReceita = table.Column<int>(type: "int", nullable: false),
                     Idingrediente = table.Column<int>(type: "int", nullable: false),
                     quantidadeIngrediente = table.Column<int>(type: "int", nullable: false),
                     IdGastoVariado = table.Column<int>(type: "int", nullable: false),
-                    qntGastoVariado = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    qntGastoVariado = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     ReceitaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -205,7 +237,8 @@ namespace Senac.GestaoReceita.WebApi.Migrations
                         column: x => x.ReceitaId,
                         principalTable: "Receitas",
                         principalColumn: "Id");
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cidades_IdEstado",
