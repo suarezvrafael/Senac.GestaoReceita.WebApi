@@ -64,7 +64,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
             var paisEntity = _context.Paises.First(x => x.Id == id);
             paisEntity.descricaoPais = pais.descricaoPais;
 
-            _context.Entry(pais).State = EntityState.Modified;
+            _context.Entry(paisEntity).State = EntityState.Modified;
 
             try
             {
