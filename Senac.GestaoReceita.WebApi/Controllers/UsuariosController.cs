@@ -54,14 +54,21 @@ namespace Senac.GestaoReceita.WebApi.Controllers
         // PUT: api/Usuarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(int id, UsuarioUpdateRequest usuario)
         {
             if (id != usuario.Id)
             {
-                return BadRequest();
+                return BadRequest("Id da request diferente da id da url");
             }
 
-            _context.Entry(usuario).State = EntityState.Modified;
+
+            var usuarioEntity = _context.Usuarios.First(x => x.Id == id);
+            usuarioEntity.Nome = usuario.Nome;
+            usuarioEntity.Ativo = usuario.Ativo;
+            usuarioEntity.Senha = usuario.Senha;
+            usuarioEntity.Username = usuario.Username;
+
+            _context.Entry(usuarioEntity).State = EntityState.Modified;
 
             try
             {
@@ -118,7 +125,7 @@ namespace Senac.GestaoReceita.WebApi.Controllers
                 return NotFound(usuario.Username);
             }
             // retorna HTTP 200 OK { "Nome": "Rafael", "username": "rafael"}
-            return Ok( new UsuarioResponse() { Nome = usr.Nome, Username = usr.Username });
+            return Ok( new UsuarioResponse() { Id = usr.Id, Nome = usr.Nome, Username = usr.Username });
         }
 
         // DELETE: api/Usuarios/5
